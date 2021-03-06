@@ -1,3 +1,6 @@
+import os
+import subprocess
+
 from cerberus import Validator
 
 from src.log.logger import logger
@@ -76,7 +79,61 @@ def fill_info(document, questions):
     return document
 
 
-def install():
-    logger.info("Do you want to install the backup service? (Y/n): ")
+# REFACT: please refact me
+def install(app_info):
+    question = "Do you want to install the backup service? (Y/n): "
+
+    answer = None
+    while answer not in [True, False]:
+        answer = True if input(question).lower() == "y" else False
+
+        if isinstance(answer, bool):
+            break
+
+    if answer:
+        files = {
+            "service_script": "{}/scripts/{}/schedule_{}_backup.service".format(
+                os.getcwd(),
+                app_info["name"],
+                app_info["name"]
+            ),
+            "timer_script": "{}/scripts/{}/schedule_{}_backup.timer".format(
+                os.getcwd(),
+                app_info["name"],
+                app_info["name"]
+            )
+        }
+
+        systemctl_path = "/usr/lib/systemd/system/"
+        for k, script_file in files.items():
+            systemctl_script_path = "{}{}".format(systemctl_path, os.path.basename(script_file))
+            sudo_cmd = "sudo cp -p {} {} && sudo chown root:root {}".format(
+                script_file,
+                systemctl_path,
+                systemctl_script_path
+            )
+            sudo_cmd_enable = "sudo systemctl enable {}".format(os.path.basename(script_file))
+            sudo_cmd_start = "sudo systemctl start {}".format(os.path.basename(script_file))
+
+            subprocess_cmd(sudo_cmd)
+            if k == "timer_script":
+                subprocess_cmd(sudo_cmd_enable)
+                subprocess_cmd(sudo_cmd_start)
+
     logger.success("Installed with success")
 
+
+def subprocess_cmd(cmd):
+    try:
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+        proc_stdout = process.communicate()[0].strip()
+    except SubprocessError as e:
+        logger.error(e)
+    except OSError as e:
+        logger.error(e)
+    except ValueError(e):
+        logger.error(e)
+    except Exception as e:
+        logger.error(e)
+
+    return proc_stdout

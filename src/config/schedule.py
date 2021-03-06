@@ -5,7 +5,7 @@ from src.log.logger import logger
 def create_systemctl_service(app_info):
     script_folder = "scripts/{}".format(app_info["name"])
     full_script_path = "{}/{}/schedule_{}_backup.service".format(os.getcwd(), script_folder, app_info["name"])
-    app_bash_script = "{}/scripts/{}/{}.service".format(os.getcwd(), app_info["name"], app_info["name"])
+    app_bash_script = "{}/scripts/{}/{}.sh".format(os.getcwd(), app_info["name"], app_info["name"])
 
     default_file = open("./templates/default_systemctl.service", "r").read()
 
@@ -32,7 +32,7 @@ def create_systemctl_timer(app_info):
     # __import__('ipdb').set_trace()
     script_folder = "scripts/{}".format(app_info["name"])
     full_script_path = "{}/{}/schedule_{}_backup.timer".format(os.getcwd(), script_folder, app_info["name"])
-    app_bash_script = "{}/scripts/{}/{}.timer".format(os.getcwd(), app_info["name"], app_info["name"])
+    app_bash_script = "{}/scripts/{}/{}.sh".format(os.getcwd(), app_info["name"], app_info["name"])
 
     default_file = open("./templates/default_systemctl.timer", "r").read()
 

@@ -1,23 +1,8 @@
-import subprocess
 import os
 from datetime import datetime
 
 from src.log.logger import logger
 
-def subprocess_cmd(cmd):
-    try:
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-        proc_stdout = process.communicate()[0].strip()
-    except SubprocessError as e:
-        logger.error(e)
-    except OSError as e:
-        logger.error(e)
-    except ValueError(e):
-        logger.error(e)
-    except Exception as e:
-        logger.error(e)
-
-    return proc_stdout
 
 
 def create_bash_script(app_info):
