@@ -7,10 +7,13 @@ def setup():
 
     schema = {
         "name": {"type": "string", "required": True},
+        "name_title": {"type": "string", "required": True},
         "bkp_path": {"type": "string", "required": True},
         "dst_path": {"type": "string", "required": True},
         "max_files": {"type": "integer", "coerce": int, "required": True},
         "notification": {"type": "boolean", "coerce": bool, "required": True},
+        "username": {"type": "string", "required": True},
+        "secrets_env": {"type": "string", "required": True}
     }
 
     document = {
@@ -19,6 +22,9 @@ def setup():
         "dst_path": None,
         "max_files": None,
         "notification": None,
+        "username": None,
+        "secrets_env": None,
+        "notification_url": None
     }
 
     questions = {
@@ -27,6 +33,9 @@ def setup():
         "dst_path": "Destination path: ",
         "max_files": "Max backup files (5 default): ",
         "notification": "Send notification? (y/N): ",
+        "username": "System user that will run this service: ",
+        "secrets_env": "Secrets env file used for notification API: ",
+        "notification_url": "Notification API url: "
     }
 
     confirmed = False
@@ -42,6 +51,8 @@ def setup():
             confirmed = False
             logger.error("There are errors in the following field(s): ", v.errors())
 
+    document["name_title"] = document["name"].title()
+
     return document
 
 def fill_info(document, questions):
@@ -50,6 +61,9 @@ def fill_info(document, questions):
     document["bkp_path"] = input(questions["bkp_path"]) or None
     document["dst_path"] = input(questions["dst_path"]) or None
     document["max_files"] = int(input(questions["max_files"]) or 5)
+    document["username"] = input(questions["username"]) or None
+    document["secrets_env"] = input(questions["secrets_env"]) or None
+    document["notification_url"] = input(questions["notification_url"]) or None
 
     answer = None
     while answer not in [True, False]:

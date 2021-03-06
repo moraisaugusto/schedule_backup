@@ -32,10 +32,10 @@ fi
 
 # Pushover notification
 if [ $notification == 1 ] ; then
-    source %%secrets%%
+    source %%secrets_env%%
     curl -s \
     --form-string "token=$PUSHOVER_TOKEN" \
     --form-string "user=$PUSHOVER_USER" \
     --form-string "message=$msg" \
-    https://api.pushover.net/1/messages.json
+    %%notification_url%%
 fi

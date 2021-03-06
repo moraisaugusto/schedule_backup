@@ -1,0 +1,9 @@
+[Unit]
+Description=%%app_title%% Backup Scheduling.
+
+[Timer]
+OnCalendar=%%frequency%%
+Persistent=true
+
+[Install]
+WantedBy=multi-user.target

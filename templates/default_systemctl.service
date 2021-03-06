@@ -1,0 +1,7 @@
+[Unit]
+Description=%%name_title%% Scheduled Backup
+
+[Service]
+Type=simple
+User=%%username%%
+ExecStart=%%app_bash_script%%
