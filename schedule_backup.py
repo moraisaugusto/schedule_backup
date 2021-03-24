@@ -5,10 +5,9 @@ from src.config.schedule import create_systemctl_service, create_systemctl_timer
 
 
 def main():
-    # app_info = setup()
+    app_info = setup()
 
     logger.info("Starting process...")
-
     create_bash_script(app_info)
     create_systemctl_service(app_info)
     create_systemctl_timer(app_info)
