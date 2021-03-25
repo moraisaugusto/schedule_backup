@@ -2,6 +2,8 @@ import os
 import re
 import subprocess
 
+from loguru import logger
+
 
 def ask_question(question, default_answer=None):
     """Ask a question to the user
