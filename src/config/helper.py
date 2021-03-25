@@ -1,5 +1,32 @@
 import os
 import re
+import subprocess
+
+
+def ask_question(question, default_answer=None):
+    """Ask a question to the user
+
+    @param question:  question to be displayed
+    @type  question:  string
+
+    @param default_answer:  default answer for the question
+    @type  default_answer:  bool
+
+    @return:  answer
+    @rtype :  bool
+
+    @raise e:  None
+    """
+    answers = {"y": True, "n": False}
+
+    confirmed = None
+    while not confirmed:
+        confirmed = input(question).lower() or default_answer
+
+        if isinstance(confirmed, bool):
+            return confirmed
+        if confirmed in ["y", "n"]:
+            return answers[confirmed]
 
 def replace_env_var(param):
     """Replace a string that contains a env variable

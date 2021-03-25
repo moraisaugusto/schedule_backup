@@ -4,7 +4,7 @@ import yaml
 from cerberus import Validator
 
 from src.log.logger import logger
-from src.config.helper import replace_env_var, subprocess_cmd
+from src.config.helper import replace_env_var, subprocess_cmd, ask_question
 
 def setup():
     v = Validator()
@@ -39,7 +39,8 @@ def setup():
         for k, _ in questions.items():
             print(f"{questions[k]} {document[k]}")
 
-        confirmed = False if input("\nIs this correct? (Y/n): ").lower() == "n" else True
+        confirmed = ask_question("\nIs this correct? (Y/n): ", True)
+
         if not v.validate(document, schema):
             confirmed = False
             logger.error(f"There are errors in the following field(s): {v.errors}")
@@ -49,22 +50,26 @@ def setup():
     return document
 
 
-def fill_info(questions):
+def fill_info(questions, use_default_file=False):
     """Fill document with data of the app that will be backed up
 
-    @param param:  
-    @type  param:  Type
+    @param questions:  document to be configured
+    @type  questions:  dict
 
-    @return:  Description
-    @rtype :  Type
+    @return:  document validated
+    @rtype :  dict
 
-    @raise e:  Description
+    @raise e:  None
     """
     yaml_filename = "default.yaml"
     exist_yaml_file = os.path.isfile(yaml_filename)
 
-    document = dict()
+    use_yaml_file = False
     if exist_yaml_file:
+        use_yaml_file = ask_question("We found a YAML default, want to use it? (Y/n)", True)
+
+    document = dict()
+    if use_yaml_file:
         with open(yaml_filename) as f:
             logger.info("Found default yaml file. Automatically configuring params...")
             yaml_data = yaml.safe_load(f)["default"]
@@ -85,41 +90,29 @@ def fill_info(questions):
         document["secrets_env"] = input(questions["secrets_env"]) or None
         document["notification_url"] = input(questions["notification_url"]) or None
 
-    answer = None
-    while answer not in [True, False]:
-        answer = True if input(questions["notification"]).lower() == "y" else False
-
-        if isinstance(answer, bool):
-            document["notification"] = int(answer)
-            break
+    confirmed = ask_question(questions["notification"], False)
+    document["notification"] = confirmed
 
     return document
 
 
 # REFACT: please refact me
 def install(app_info):
-    question = "Do you want to install the backup service? (Y/n): "
 
-    answer = None
-    while answer not in [True, False]:
-        answer = True if input(question).lower() == "y" else False
+    confirmed = ask_question("Do you want to install the backup service? (Y/n): ", True)
 
-        if isinstance(answer, bool):
-            break
+    if confirmed:
+        base_systemctl_path = "{}/scripts/{}/schedule_{}_backup".format(
+            os.getcwd(),
+            app_info["name"],
+            app_info["name"]
+        )
 
-    if answer:
-        files = {
-            "service_script": "{}/scripts/{}/schedule_{}_backup.service".format(
-                os.getcwd(),
-                app_info["name"],
-                app_info["name"]
-            ),
-            "timer_script": "{}/scripts/{}/schedule_{}_backup.timer".format(
-                os.getcwd(),
-                app_info["name"],
-                app_info["name"]
-            )
-        }
+        files = dict()
+        for i in ["service", "timer"]:
+            k = f"{i}_script"
+            v = f"{base_systemctl_path}.{i}" 
+            files[k] = v
 
         systemctl_path = "/usr/lib/systemd/system/"
         for k, script_file in files.items():
