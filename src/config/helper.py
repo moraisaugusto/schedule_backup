@@ -70,7 +70,7 @@ def subprocess_cmd(cmd):
         logger.error(e)
     except OSError as e:
         logger.error(e)
-    except ValueError(e):
+    except ValueError as e:
         logger.error(e)
     except Exception as e:
         logger.error(e)
