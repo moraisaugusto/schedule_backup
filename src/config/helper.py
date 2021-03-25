@@ -66,7 +66,7 @@ def subprocess_cmd(cmd):
     try:
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
         proc_stdout = process.communicate()[0].strip()
-    except SubprocessError as e:
+    except subprocess.SubprocessError as e:
         logger.error(e)
     except OSError as e:
         logger.error(e)
