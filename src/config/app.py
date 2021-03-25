@@ -25,7 +25,7 @@ def setup():
         "bkp_path": "Backup path: ",
         "dst_path": "Destination path: ",
         "max_files": "Max backup files (5 default): ",
-        "notification": "Send notification? (y/N): ",
+        "notification": "Do you want to use the pushover service notification? (y/N): ",
         "username": "System user that will run this service: ",
         "secrets_env": "Secrets env file used for notification API: ",
         "notification_url": "Notification API url: "
@@ -37,7 +37,7 @@ def setup():
 
         print("\n")
         for k, _ in questions.items():
-            print(f"{questions[k]} {document[k]}")
+            print(f"{questions[k]} \033[1m{document[k]}\033[0m")
 
         confirmed = ask_question("\nIs this correct? (Y/n): ", True)
 
@@ -66,7 +66,7 @@ def fill_info(questions, use_default_file=False):
 
     use_yaml_file = False
     if exist_yaml_file:
-        use_yaml_file = ask_question("We found a YAML default, want to use it? (Y/n)", True)
+        use_yaml_file = ask_question("We found a YAML default, want to use it? (Y/n): ", True)
 
     document = dict()
     if use_yaml_file:
@@ -99,7 +99,7 @@ def fill_info(questions, use_default_file=False):
 # REFACT: please refact me
 def install(app_info):
 
-    confirmed = ask_question("Do you want to install the backup service? (Y/n): ", True)
+    confirmed = ask_question("Do you want to install the backup service? (y/N): ", False)
 
     if confirmed:
         base_systemctl_path = "{}/scripts/{}/schedule_{}_backup".format(
@@ -111,7 +111,7 @@ def install(app_info):
         files = dict()
         for i in ["service", "timer"]:
             k = f"{i}_script"
-            v = f"{base_systemctl_path}.{i}" 
+            v = f"{base_systemctl_path}.{i}"
             files[k] = v
 
         systemctl_path = "/usr/lib/systemd/system/"
@@ -126,8 +126,9 @@ def install(app_info):
             sudo_cmd_start = "sudo systemctl start {}".format(os.path.basename(script_file))
 
             subprocess_cmd(sudo_cmd)
-            if k == "timer_script":
-                subprocess_cmd(sudo_cmd_enable)
-                subprocess_cmd(sudo_cmd_start)
+            subprocess_cmd(sudo_cmd_enable)
+            subprocess_cmd(sudo_cmd_start)
 
-    logger.success("Installed with success")
+        logger.success("Installed with success")
+    else:
+        logger.success("Scripts created but NOT installed")

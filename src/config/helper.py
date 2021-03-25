@@ -21,12 +21,13 @@ def ask_question(question, default_answer=None):
 
     confirmed = None
     while not confirmed:
-        confirmed = input(question).lower() or default_answer
+        confirmed = input(f"\033[1m{question}\033[0m").lower() or default_answer
 
         if isinstance(confirmed, bool):
             return confirmed
         if confirmed in ["y", "n"]:
             return answers[confirmed]
+        confirmed = None
 
 def replace_env_var(param):
     """Replace a string that contains a env variable
