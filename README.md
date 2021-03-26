@@ -1,2 +1,2 @@
-# schedule_backup
-Script that create automatic backups and schedule it
+# Schedule Backup
+Script that creates automatic backups and schedule it
