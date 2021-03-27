@@ -31,6 +31,7 @@ def ask_question(question, default_answer=None):
         else:
             answer = input(question).lower() or default_answer
 
+
 def replace_env_var(param):
     """Replace a string that contains a env variable
 
@@ -42,7 +43,7 @@ def replace_env_var(param):
 
     @raise e:  None
     """
-    search_env_var = re.match("\$[A-Z0-1]+", param)
+    search_env_var = re.match(r"\$[A-Z0-1]+", param)
     param_replaced = param
 
     if search_env_var:
@@ -51,6 +52,7 @@ def replace_env_var(param):
         param_replaced = param.replace(env_var, env_var_value)
 
     return param_replaced
+
 
 def subprocess_cmd(cmd):
     """execute a subprocess

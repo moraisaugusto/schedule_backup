@@ -1,7 +1,10 @@
 from src.log.logger import logger
 from src.config.app import setup, install
 from src.config.backup import create_bash_script
-from src.config.schedule import create_systemctl_service, create_systemctl_timer
+from src.config.schedule import (
+    create_systemctl_service,
+    create_systemctl_timer
+)
 
 
 def main():

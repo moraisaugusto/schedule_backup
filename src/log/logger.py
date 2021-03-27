@@ -1,20 +1,22 @@
 import sys
 from loguru import logger as loguru_logger
 
+
 def filter_level(level):
     def fn(m):
         return m["level"] == level
     return fn
+
 
 def config_logger():
     loguru_logger.remove()
     handlers = [
         {
             "sink": sys.stdout,
-            "colorize":True,
+            "colorize": True,
             "format": "<level>{level}</level> | {message}",
             "level": "INFO",
-            "backtrace":False,
+            "backtrace": False,
         },
         {
             "sink": "./logs/app_error.log",

@@ -2,10 +2,15 @@ import os
 
 from src.log.logger import logger
 
+
 def create_systemctl_service(app_info):
     script_folder = "scripts/{}".format(app_info["name"])
-    full_script_path = "{}/{}/schedule_{}_backup.service".format(os.getcwd(), script_folder, app_info["name"])
-    app_bash_script = "{}/scripts/{}/{}.sh".format(os.getcwd(), app_info["name"], app_info["name"])
+    full_script_path = "{}/{}/schedule_{}_backup.service".format(
+        os.getcwd(), script_folder, app_info["name"]
+    )
+    app_bash_script = "{}/scripts/{}/{}.sh".format(
+        os.getcwd(), app_info["name"], app_info["name"]
+    )
 
     default_file = open("./templates/default_systemctl.service", "r").read()
 
@@ -25,14 +30,17 @@ def create_systemctl_service(app_info):
     except Exception as e:
         logger.error(e)
 
-    logger.success("Created systemctl service script for: {}".format(app_info["name"]))
-    pass
+    logger.success(f"Created systemctl service script for: {app_info['name']}")
+
 
 def create_systemctl_timer(app_info):
-    # __import__('ipdb').set_trace()
     script_folder = "scripts/{}".format(app_info["name"])
-    full_script_path = "{}/{}/schedule_{}_backup.timer".format(os.getcwd(), script_folder, app_info["name"])
-    app_bash_script = "{}/scripts/{}/{}.sh".format(os.getcwd(), app_info["name"], app_info["name"])
+    full_script_path = "{}/{}/schedule_{}_backup.timer".format(
+        os.getcwd(), script_folder, app_info["name"]
+    )
+    app_bash_script = "{}/scripts/{}/{}.sh".format(
+        os.getcwd(), app_info["name"], app_info["name"]
+    )
 
     default_file = open("./templates/default_systemctl.timer", "r").read()
 
@@ -52,6 +60,5 @@ def create_systemctl_timer(app_info):
     except Exception as e:
         logger.error(e)
 
-    logger.success("Created systemctl service script for: {}".format(app_info["name"]))
-    logger.success("Created Systemctl Timer")
-    pass
+    logger.success("Created systemctl Service script")
+    logger.success("Created systemctl Timer script")

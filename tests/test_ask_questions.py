@@ -1,7 +1,6 @@
 import os
-import sys
-import pytest
 from src.config.helper import replace_env_var
+
 
 def test_replace_env_var():
     os.environ["HOME"] = "/home/FAKEUSER"

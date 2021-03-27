@@ -1,8 +1,6 @@
 import os
-from datetime import datetime
 
 from src.log.logger import logger
-
 
 
 def create_bash_script(app_info):
