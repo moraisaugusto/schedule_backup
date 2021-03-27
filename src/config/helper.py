@@ -20,16 +20,16 @@ def ask_question(question, default_answer=None):
     @raise e:  None
     """
     answers = {"y": True, "n": False}
+    question = f"\033[1m{question}\033[0m"
+    answer = input(question).lower() or default_answer
 
-    confirmed = None
-    while not confirmed:
-        confirmed = input(f"\033[1m{question}\033[0m").lower() or default_answer
-
-        if isinstance(confirmed, bool):
-            return confirmed
-        if confirmed in ["y", "n"]:
-            return answers[confirmed]
-        confirmed = None
+    while True:
+        if answer in ["y", "n"]:
+            return answers[answer]
+        elif answer == default_answer:
+            return default_answer
+        else:
+            answer = input(question).lower() or default_answer
 
 def replace_env_var(param):
     """Replace a string that contains a env variable
@@ -55,8 +55,8 @@ def replace_env_var(param):
 def subprocess_cmd(cmd):
     """execute a subprocess
 
-    @param param:  command to be executed
-    @type  param:  string
+    @param cmd:  command to be executed
+    @type  cmd:  string
 
     @return:  result of the command
     @rtype :  string
@@ -74,5 +74,7 @@ def subprocess_cmd(cmd):
         logger.error(e)
     except Exception as e:
         logger.error(e)
+    finally:
+        SystemExit("Aborting...")
 
     return proc_stdout
