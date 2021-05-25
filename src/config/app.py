@@ -18,6 +18,7 @@ def setup():
         "notification": {"type": "boolean", "coerce": bool, "required": True},
         "notification_url": {
             "type": "boolean", "coerce": bool, "required": False},
+        "frequency": {"type": "string", "required": True},
         "username": {"type": "string", "required": True},
         "secrets_env": {"type": "string", "required": True}
     }
@@ -29,6 +30,7 @@ def setup():
         "max_files": "Max backup files (5 default): ",
         "notification": (
             "Do you want to use the pushover service notification? (y/N): "),
+        "frequency": "Frequency that backup will run: ",
         "username": "System user that will run this service: ",
         "secrets_env": "Secrets env file used for notification API: ",
         "notification_url": "Notification API url: "
@@ -85,6 +87,7 @@ def fill_info(questions, use_default_file=False):
         document["bkp_path"] = replace_env_var(yaml_data["bkp_path"]) or None
         document["dst_path"] = replace_env_var(yaml_data["dst_path"]) or None
         document["max_files"] = yaml_data["max_files"] or 5
+        document["frequency"] = replace_env_var(yaml_data["frequency"]) or "Mon 12:15"
         document["username"] = replace_env_var(yaml_data["username"]) or None
         document["secrets_env"] = replace_env_var(
             yaml_data["secrets_env"]) or None
@@ -94,6 +97,7 @@ def fill_info(questions, use_default_file=False):
         document["bkp_path"] = input(questions["bkp_path"]) or None
         document["dst_path"] = input(questions["dst_path"]) or None
         document["max_files"] = int(input(questions["max_files"]) or 5)
+        document["frequency"] = replace_env_var(yaml_data["frequency"]) or "Mon 12:15"
         document["username"] = input(questions["username"]) or None
         document["secrets_env"] = input(questions["secrets_env"]) or None
         document["notification_url"] = input(
