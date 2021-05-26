@@ -1,10 +1,10 @@
 default:
-  name: my_app
-  bkp_path: $HOME/my_app_data
-  dst_path: $HOME/my_app_data_dst_folder
+  name: zotero
+  bkp_path: $HOME/.zotero
+  dst_path: $HOME/Nextcloud/backups/zotero
   max_files: 5
   notification: 1
   notification_url: https://api.pushover.net/1/messages.json
   username: $USER
-  secrets_env: $HOME/.zshSecrets
+  secrets_env: $HOME/.secrets
   frequency: Mon 13:15

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from src.log.logger import logger
 from src.config.app import setup, install
 from src.config.backup import create_bash_script
