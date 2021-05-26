@@ -1,7 +1,7 @@
 # Schedule Backup
-Schedule Backup is a backup helper application that helps you to create a simple bash backup script and the systemctl service/timer files. This can be used to backup your data application from time to time.
+Schedule Backup is a backup helper application that creates a simple bash backup script and the systemctl service/timer files. You can use it to backup your data application from time to time.
 
-E.g.: Let's suppose that you are using [Zotero](https://www.zotero.org/) app to organize all your Scientific and Books. You can use the Schedule Backup to backup your data folder and save it into a [NextCloud](https://nextcloud.com/) or [Google Drive](https://drive.google.com/) account.
+Example: Let's suppose that you are using the [Zotero](https://www.zotero.org/) app to organize your Scientific and Books. You can use the Schedule Backup to backup your data folder and save it into a [NextCloud](https://nextcloud.com/) or [Google Drive](https://drive.google.com/) account.
 
 
 ![Schedule Backup](https://raw.githubusercontent.com/moraisaugusto/schedule_backup/main/media/schedule_backup.gif)
