@@ -5,6 +5,7 @@ from loguru import logger as loguru_logger
 def filter_level(level):
     def fn(m):
         return m["level"] == level
+
     return fn
 
 

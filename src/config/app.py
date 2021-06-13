@@ -11,29 +11,66 @@ def setup():
     v = Validator()
 
     schema = {
-        "name": {"type": "string", "required": True},
-        "bkp_path": {"type": "string", "required": True},
-        "dst_path": {"type": "string", "required": True},
-        "max_files": {"type": "integer", "coerce": int, "required": True},
-        "notification": {"type": "boolean", "coerce": bool, "required": True},
+        "name": {
+            "type": "string",
+            "required": True
+        },
+        "bkp_path": {
+            "type": "string",
+            "required": True
+        },
+        "dst_path": {
+            "type": "string",
+            "required": True
+        },
+        "max_files": {
+            "type": "integer",
+            "coerce": int,
+            "required": True
+        },
+        "notification": {
+            "type": "boolean",
+            "coerce": bool,
+            "required": True
+        },
         "notification_url": {
-            "type": "boolean", "coerce": bool, "required": False},
-        "frequency": {"type": "string", "required": True},
-        "username": {"type": "string", "required": True},
-        "secrets_env": {"type": "string", "required": True}
+            "type": "boolean",
+            "coerce": bool,
+            "required": False
+        },
+        "frequency": {
+            "type": "string",
+            "required": True
+        },
+        "username": {
+            "type": "string",
+            "required": True
+        },
+        "secrets_env": {
+            "type": "string",
+            "required": True
+        }
     }
 
     questions = {
-        "name": "App name: ",
-        "bkp_path": "Backup path: ",
-        "dst_path": "Destination path: ",
-        "max_files": "Max backup files (5 default): ",
-        "notification": (
-            "Do you want to use the pushover service notification? (y/N): "),
-        "frequency": "Frequency that backup will run: ",
-        "username": "System user that will run this service: ",
-        "secrets_env": "Secrets env file used for notification API: ",
-        "notification_url": "Notification API url: "
+        "name":
+        "App name: ",
+        "bkp_path":
+        "Backup path: ",
+        "dst_path":
+        "Destination path: ",
+        "max_files":
+        "Max backup files (5 default): ",
+        "notification":
+        ("Do you want to use the pushover service notification? (y/N): "),
+        "frequency":
+        "Frequency that backup will run: ",
+        "username":
+        "System user that will run this service: ",
+        "secrets_env":
+        "Secrets env file used for notification API: ",
+        "notification_url":
+        "Notification API url: "
     }
 
     while True:
@@ -72,22 +109,21 @@ def fill_info(questions, use_default_file=False):
     use_yaml_file = False
     if exist_yaml_file:
         use_yaml_file = ask_question(
-            "We found a YAML default, want to use it? (Y/n): ", True
-        )
+            "We found a YAML default, want to use it? (Y/n): ", True)
 
     document = dict()
     if use_yaml_file:
         with open(yaml_filename) as f:
             logger.info(
-                "Found default yaml file. Automatically configuring params..."
-            )
+                "Found default yaml file. Automatically configuring params...")
             yaml_data = yaml.safe_load(f)["default"]
 
         document["name"] = yaml_data["name"] or None
         document["bkp_path"] = replace_env_var(yaml_data["bkp_path"]) or None
         document["dst_path"] = replace_env_var(yaml_data["dst_path"]) or None
         document["max_files"] = yaml_data["max_files"] or 5
-        document["frequency"] = replace_env_var(yaml_data["frequency"]) or "Mon 12:15"
+        document["frequency"] = replace_env_var(
+            yaml_data["frequency"]) or "Mon 12:15"
         document["username"] = replace_env_var(yaml_data["username"]) or None
         document["secrets_env"] = replace_env_var(
             yaml_data["secrets_env"]) or None
@@ -97,7 +133,8 @@ def fill_info(questions, use_default_file=False):
         document["bkp_path"] = input(questions["bkp_path"]) or None
         document["dst_path"] = input(questions["dst_path"]) or None
         document["max_files"] = int(input(questions["max_files"]) or 5)
-        document["frequency"] = replace_env_var(yaml_data["frequency"]) or "Mon 12:15"
+        document["frequency"] = replace_env_var(
+            yaml_data["frequency"]) or "Mon 12:15"
         document["username"] = input(questions["username"]) or None
         document["secrets_env"] = input(questions["secrets_env"]) or None
         document["notification_url"] = input(
@@ -113,15 +150,11 @@ def fill_info(questions, use_default_file=False):
 def install(app_info):
 
     confirmed = ask_question(
-        "Do you want to install the backup service? (y/N): ", False
-    )
+        "Do you want to install the backup service? (y/N): ", False)
 
     if confirmed:
         base_systemctl_path = "{}/scripts/{}/schedule_{}_backup".format(
-            os.getcwd(),
-            app_info["name"],
-            app_info["name"]
-        )
+            os.getcwd(), app_info["name"], app_info["name"])
 
         files = dict()
         for i in ["service", "timer"]:
@@ -132,13 +165,9 @@ def install(app_info):
         systemctl_path = "/usr/lib/systemd/system/"
         for k, script_file in files.items():
             systemctl_script_path = "{}{}".format(
-                systemctl_path, os.path.basename(script_file)
-            )
+                systemctl_path, os.path.basename(script_file))
             sudo_cmd = "sudo cp -p {} {} && sudo chown root:root {}".format(
-                script_file,
-                systemctl_path,
-                systemctl_script_path
-            )
+                script_file, systemctl_path, systemctl_script_path)
             sudo_cmd_enable = "sudo systemctl enable {}".format(
                 os.path.basename(script_file))
             sudo_cmd_start = "sudo systemctl start {}".format(
