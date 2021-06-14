@@ -21,6 +21,11 @@ echo "Backing %%app_title%% data... $backup_path"
 cd $backup_path/.. && tar -zcf $backup_file $basename && mv $backup_file $dest_path && msg=$msg_success || msg=$msg_failed
 echo $msg
 
+# TODO: create feature
+if [ $upload_nextcloud == 1 ] ; then
+    curl -T  ${output_dir}/${app}_${date}.tgz -u '$NEXTCLOUD_USER:NEXTCLOUD_PASS' $NEXTCLOUD_URL
+fi
+
 # Backup rotate
 files=($(ls -t ${dest_path}/%%name%%_*))
 num_files=${#files[@]}
