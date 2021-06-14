@@ -8,3 +8,4 @@ default:
   username: $USER
   secrets_env: $HOME/.secrets
   frequency: Mon 13:15
+  upload_nextcloud: 0

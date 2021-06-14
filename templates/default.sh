@@ -23,7 +23,7 @@ echo $msg
 
 # TODO: create feature
 if [ $upload_nextcloud == 1 ] ; then
-    curl -T  ${output_dir}/${app}_${date}.tgz -u '$NEXTCLOUD_USER:NEXTCLOUD_PASS' $NEXTCLOUD_URL
+    curl -T  $backup_file -u '$NEXTCLOUD_USER:NEXTCLOUD_PASS' $NEXTCLOUD_URL
 fi
 
 # Backup rotate
