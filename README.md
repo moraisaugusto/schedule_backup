@@ -35,6 +35,7 @@ default:
   username: $USER
   secrets_env: $HOME/.secrets
   frequency: Mon 13:15
+  upload_nextcloud: 0
 ```
 
 NOTE: Schedule Backup can understand environment variables. So you can use `$HOME` variable
