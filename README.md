@@ -1,4 +1,7 @@
 # Schedule Backup
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/moraisaugusto/schedule_backup.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/moraisaugusto/schedule_backup/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/moraisaugusto/schedule_backup.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/moraisaugusto/schedule_backup/context:python)
+
 Schedule Backup is a backup helper application that creates a simple bash backup script and the systemctl service/timer files. You can use it to backup your data application from time to time.
 
 Example: Let's suppose that you are using the [Zotero](https://www.zotero.org/) app to organize your Scientific and Books. You can use the Schedule Backup to backup your data folder and save it into a [NextCloud](https://nextcloud.com/) or [Google Drive](https://drive.google.com/) account.
